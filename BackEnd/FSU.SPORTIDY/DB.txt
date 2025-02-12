@@ -1,0 +1,787 @@
+CREATE TABLE [dbo].[CarePlanSchedule](
+	[ScheduleID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[DayOfWeek] [nvarchar](50) NULL,
+	[StarTime] datetime NULL,
+	[EndTime] datetime NULL,
+	[CarePlanID] [int] NULL,
+)
+CREATE TABLE [dbo].[Criteria](
+	[CriteriaID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[CriteriaCode] [nvarchar](50) NULL,
+	[CriteriaName] [nvarchar](100) NULL,
+	[CriteriaDescription] [nvarchar](max) NULL,
+	[Priority] [int] NULL,
+	[isActive] [bit] NULL,
+	[CriteriaTypeID] [int] NULL,
+)
+CREATE TABLE [dbo].[CriteriaGraftedPlant](
+	[GraftedPlantID] [int] NOT NULL,
+	[CriteriaID] [int] NOT NULL,
+	[isChecked] [bit] NULL,
+	PRIMARY KEY([GraftedPlantID], [CriteriaID])
+)
+CREATE TABLE [dbo].[CriteriaHarvestType](
+	[CriteriaID] [int] NOT NULL,
+	[HarvestTypeID] [int] NOT NULL,
+	[isChecked] [bit] NULL,
+	PRIMARY KEY([CriteriaID], [HarvestTypeID])
+)
+
+CREATE TABLE [dbo].[CriteriaType](
+	[CriteriaTypeID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[GrowthStageID] [int] NULL,
+	[CriteriaTypeCode] [nvarchar](50) NULL,
+	[CriteriaTypeName] [nvarchar](100) NULL,
+)
+CREATE TABLE [dbo].[GrowthStage](
+	[GrowthStageID] [int] IDENTITY(1,1) NOT NULL,
+	[GrowthStageCode] [nvarchar](50) NULL,
+	[GrowthStageName] [nchar](50) NULL,
+	[MonthAgeStart] [datetime] NULL,
+	[MonthAgeEnd] [datetime] NULL,
+)
+CREATE TABLE [dbo].[Crop](
+	[CropID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[CropCode] [nvarchar](50) NULL,
+	[CropName] [nvarchar](255) NULL,
+	[CreateDate] [datetime] NULL,
+	[UpdateDate] [datetime] NULL,
+	[CropExpectedTime] [datetime] NULL,
+	[CropActualTime] [datetime] NULL,
+	[HarvestSeason] [nvarchar](200) NULL,
+	[EstimateYield] [float] NULL,
+	[ActualYield] [float] NULL,
+	[Status] [nvarchar](50) NULL,
+	[Notes] [nvarchar](255) NULL,
+	[MarketPrice] [float] NULL,
+)
+CREATE TABLE [dbo].[Cultivar](
+	[CultivarID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[CultivarCode] [nvarchar](50) NULL,
+	[CultivarName] [nvarchar](50) NULL,
+	[Description] [nvarchar](max) NULL,
+	[CreateDate] [datetime] NULL,
+	[UpdateDate] [datetime] NULL,
+	[IsDelete] [bit] NULL,
+)
+CREATE TABLE [dbo].[ChatMessage](
+	[MessageID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[MessageCode] [nvarchar](50) NULL,
+	[MessageContent] [nvarchar](MAX) NULL,
+	[CreateDate] [datetime] NULL,
+	[UpdateDate] [datetime] NULL,
+	[SenderID] [int] NULL,
+	[IsUser] [bit] NULL,
+	[MessageType] [nvarchar](100) NULL,
+	[RoomID] [int] NULL,
+)
+CREATE TABLE [dbo].[ChatRoom](
+	[RoomID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[RoomCode] [nvarchar](50) NULL,
+	[RoomName] [nvarchar](200) NULL,
+	[CreateDate] [datetime] NULL,
+	[AIResponseID] [int] NULL,
+	[CreateBy] [int] NULL,
+)
+
+CREATE TABLE [dbo].[Farm](
+	[FarmID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[FarmCode] [nvarchar](50) NULL,
+	[FarmName] [nvarchar](100) NULL,
+	[Address] [nvarchar](max) NULL,
+	[LogoURL] [nvarchar](500) NULL,
+	[Ward] [nvarchar](300) NULL,
+	[Province] [nvarchar](300) NULL,
+	[District] [nvarchar](200) NULL,
+	[Area] [float] NULL,
+	[SoilType] [nvarchar](50) NULL,
+	[ClimateZone] [nvarchar](50) NULL,
+	[CreateDate] [datetime] NULL,
+	[UpdateDate] [datetime] NULL,
+	[IsDelete] [bit] NULL,
+	[Status] [nvarchar](20) NULL,
+	[Length] [float] NULL,
+	[Width] [float] NULL,
+	[Description] [nvarchar](255) NULL,
+)
+
+CREATE TABLE [dbo].[FarmCoordination](
+	[FarmCoordinationID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[FarmCoordinationCode] [nvarchar](50) NULL,
+	[Longitude] [float] NULL,
+	[Lagtitude] [float] NULL,
+	[FarmID] [int] NULL,
+)
+
+CREATE TABLE [dbo].[GraftedPlant](
+	[GraftedPlantID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[GraftedPlantCode] [nvarchar](50) NULL,
+	[GraftedPlantName] [nvarchar](100) NULL,
+	[GrowthStage] [nvarchar](100) NULL,
+	[SeparatedDate] [datetime] NULL,
+	[Status] [nvarchar](100) NULL,
+	[GraftedDate] [datetime] NULL,
+	[Note] [nvarchar](max) NULL,
+	[PlantID] [int] NULL,
+	[PlanID] [int] NULL,
+	[PlanLotID] [int] NULL,
+)
+
+CREATE TABLE [dbo].[GraftedPlantNote](
+	[GraftedPlantNoteID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[GraftedPlantNoteName] [nvarchar](100) NULL,
+	[Content] [nvarchar](max) NULL,
+	[Image] [nvarchar](50) NULL,
+	[NoteTaker] [nvarchar](50) NULL,
+	[GraftedPlantID] [int] NULL,
+	[CreateDate] [datetime] NULL,
+	[UpdateDate] [datetime] NULL,
+)
+
+CREATE TABLE [dbo].[HarvestHistory](
+	[HarvestHistoryID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[HarvestHistoryCode] [nvarchar](50) NULL,
+	[DateHarvest] [datetime] NULL,
+	[HarvestHistoryNote] [nvarchar](max) NULL,
+	[TotalPrice] [float] NULL,
+	[HarvestStatus] [nvarchar](50) NULL,
+	[CropID] [int] NULL,
+)
+
+CREATE TABLE [dbo].[HarvestType](
+	[HarvestTypeID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[HarvestTypeCode] [nvarchar](50) NULL,
+	[HarvestTypeName] [nvarchar](100) NULL,
+	[HarvestTypeDescription] [nvarchar](max) NULL,
+)
+
+CREATE TABLE [dbo].[HarvestTypeHistory](
+	[HarvestTypeID] [int] NOT NULL,
+	[PlantID] [int] NULL,
+	[Unit] [int] NULL,
+	[Price] [float] NULL,
+	[Quantity] [int] NULL,
+	[HarvestHistoryID] [int] NOT NULL,
+	PRIMARY KEY([HarvestTypeID], [HarvestHistoryID])
+)
+CREATE TABLE [dbo].[LandPlot](
+	[LandPlotID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[LandPlotCode] [nvarchar](50) NULL,
+	[LandPlotName] [nvarchar](100) NULL,
+	[Area] [float] NULL,
+	[Length] [float] NULL,
+	[Width] [float] NULL,
+	[SoilType] [nvarchar](50) NULL,
+	[CreateDate] [datetime] NULL,
+	[UpdateDate] [datetime] NULL,
+	[Status] [nvarchar](20) NULL,
+	[Description] [nvarchar](255) NULL,
+	[FarmID] [int] NULL,
+	[TargetMarket] [nvarchar](100) NULL,
+)
+
+CREATE TABLE [dbo].[LandPlotCoordination](
+	[LandPlotCoordinationID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[LandPlotCoordinationCode] [nvarchar](50) NULL,
+	[Longitude] [float] NULL,
+	[Lagtitude] [float] NULL,
+	[LandPlotID] [int] NULL,
+)
+CREATE TABLE [dbo].[LandPlotCrop](
+	[LandPlotID] [int] NOT NULL,
+	[CropID] [int] NOT NULL,
+)
+CREATE TABLE [dbo].[LandRow](
+	[LandRowID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[LandRowCode] [nvarchar](50) NULL,
+	[RowIndex] [int] NULL,
+	[TreeAmount] [int] NULL,
+	[Distance] [float] NULL,
+	[Length] [float] NULL,
+	[Width] [float] NULL,
+	[Direction] [nvarchar](50) NULL,
+	[CreateDate] [datetime] NULL,
+	[UpdateDate] [datetime] NULL,
+	[Status] [nvarchar](20) NULL,
+	[Description] [nvarchar](255) NULL,
+	[LandPlotID] [int] NULL,
+)
+
+CREATE TABLE [dbo].[Notification](
+	[NotificationID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[NotificationCode] [nvarchar](50) NULL,
+	[Title] [nvarchar](50) NULL,
+	[Content] [nvarchar](max) NULL,
+	[Link] [nvarchar](100) NULL,
+	[CreateDate] [datetime] NULL,
+	[isRead] [bit] NULL,
+	[UserID] [int] NULL,
+	[NotificationTypeID] [int] NULL,
+)
+
+CREATE TABLE [dbo].[NotificationType](
+	[NotificationTypeID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[NotificationTypeCode] [nvarchar](50) NULL,
+	[Icon] [nvarchar](50) NULL,
+	[NotificationType] [nvarchar](50) NULL,
+)
+
+CREATE TABLE [dbo].[Order](
+	[OrderID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[OrderCode] [nvarchar](50) NULL,
+	[OrderName] [nvarchar](100) NULL,
+	[TotalPrice] [float] NULL,
+	[Notes] [nvarchar](max) NULL,
+	[OrderDate] [datetime] NULL,
+	[EnrolledDate] [datetime] NULL,
+	[ExpiredDate] [datetime] NULL,
+	[PackageID] [int] NULL,
+	[FarmID] [int] NULL,
+)
+
+CREATE TABLE [dbo].[Package](
+	[PackageID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[PackageCode] [nvarchar](50) NULL,
+	[PackageName] [nvarchar](100) NULL,
+	[PackagePrice] [float] NULL,
+	[Duration] [float] NULL,
+	[CreateDate] [datetime] NULL,
+	[UpdateDate] [datetime] NULL,
+	[Status] [nvarchar](50) NULL,
+)
+
+CREATE TABLE [dbo].[PackageDetail](
+	[PackageDetailID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[PackageDetailCode] [nvarchar](50) NULL,
+	[FeatureName] [nvarchar](max) NULL,
+	[FeatureDescription] [nvarchar](max) NULL,
+	[PackageID] [int] NULL,
+)
+
+CREATE TABLE [dbo].[Partner](
+	[PartnerID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[PartnerCode] [nvarchar](50) NULL,
+	[PartnerName] [nvarchar](100) NULL,
+	[Address] [nvarchar](max) NULL,
+	[PhoneNumber] [nvarchar](20) NULL,
+	[Email] [nvarchar](20) NULL,
+	[CreateDate] [datetime] NULL,
+	[UpdateDate] [datetime] NULL,
+	[National] [nvarchar](100) NULL,
+	[RoleID] [int] NULL,
+)
+
+CREATE TABLE [dbo].[Payment](
+	[PaymentID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[PaymentCode] [nvarchar](50) NULL,
+	[TransactionID] [nvarchar](100) NULL,
+	[CreateDate] [datetime] NULL,
+	[PaymentMethod] [nvarchar](50) NULL,
+	[Status] [nvarchar](50) NULL,
+	[UpdateDate] [datetime] NULL,
+	[OrderID] [int] NULL,
+)
+
+CREATE TABLE [dbo].[Plan](
+	[PlanID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[Status] [nvarchar](100) NULL,
+	[PlanCode] [nvarchar](50) NULL,
+	[CreateDate] [datetime] NULL,
+	[StartDate] [datetime] NULL,
+	[EndDate] [datetime] NULL,
+	[UpdateDate] [datetime] NULL,
+	[isActive] [bit] NULL,
+	[Notes] [nvarchar](255) NULL,
+	[PlanDetail] [nvarchar](max) NULL,
+	[ResponsibleBy] [nvarchar](50) NULL,
+	[Frequency] [nvarchar](50) NULL,
+	[GrowthStageID] [int] NULL,
+	[PlantID] [int] NULL,
+	[LandPlotID] [int] NULL,
+	[AssignorID] [int] NULL,
+	[TypeWorkID] [int] NULL,
+	[PesticideName] [nvarchar](255) NULL,
+	[MaxVolume] [float] NULL,
+	[MinVolume] [float] NULL,
+	[ProcessID] [int] NULL,
+	[CropID] [int] NULL,
+	[PlantLotID] [int] NULL
+)
+
+CREATE TABLE [dbo].[Plant](
+	[PlantID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[PlantCode] [nvarchar](50) NULL,
+	[PlantName] [nvarchar](50) NULL,
+	[PlantIndex] [int] NULL,
+	[GrowthStage] [nvarchar](50) NULL,
+	[HealthStatus] [nvarchar](50) NULL,
+	[CreateDate] [datetime] NULL,
+	[UpdateDate] [datetime] NULL,
+	[PlantingDate] [datetime] NULL,
+	[PlantReferenceID] [int] NULL,
+	[Description] [nvarchar](255) NULL,
+	[CultivarID] [int] NULL,
+	[ImageURL] [nvarchar](255) NULL,
+	[LandRowID] [int] NULL,
+)
+
+CREATE TABLE [dbo].[PlantCriteria](
+	[PlantID] [int] NOT NULL,
+	[CriteriaID] [int] NOT NULL,
+	[isChecked] [bit] NULL,
+	PRIMARY KEY([PlantID], [CriteriaID])
+)
+
+CREATE TABLE [dbo].[PlantGrowthHistory](
+	[PlantGrowthHistoryID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[PlantGrowthHistoryCode] [nvarchar](50) NULL,
+	[Content] [nvarchar](max) NULL,
+	[IssueName] [nvarchar](max) NULL,
+	[NoteTaker] [nvarchar](100) NULL,
+	[CreateDate] [datetime] NULL,
+	[UpdateDate] [datetime] NULL,
+	[PlantID] [int] NULL,
+)
+
+CREATE TABLE [dbo].[PlantLot](
+	[PlantLotID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[PlantLotCode] [nvarchar](50) NULL,
+	[PlantLotName] [nvarchar](100) NULL,
+	[PreviousQuantity] [int] NULL,
+	[Unit] [nvarchar](100) NULL,
+	[Status] [nvarchar](100) NULL,
+	[LastQuantity] [int] NULL,
+	[ImportedDate] [datetime] NULL,
+	[Note] [nvarchar](max) NULL,
+	[PartnerID] [int] NULL,
+)
+
+CREATE TABLE [dbo].[PlantResource](
+	[PlanResourceID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[PlanResourceCode] [nvarchar](50) NULL,
+	[ResourceType] [nvarchar](255) NULL,
+	[ResourceURL] [nvarchar](max) NULL,
+	[Description] [nvarchar](max) NULL,
+	[CreateDate] [datetime] NULL,
+	[UpdateDate] [datetime] NULL,
+	[PlantGrowthHistoryID] [int] NULL,
+)
+
+CREATE TABLE [dbo].[Process](
+	[ProcessID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[ProcessCode] [nvarchar](50) NULL,
+	[ProcessName] [nvarchar](100) NULL,
+	[isDefault] [bit] NULL,
+	[isActive] [bit] NULL,
+	[CreateDate] [datetime] NULL,
+	[UpdateDate] [datetime] NULL,
+	[isDeleted] [bit] NULL,
+	[GrowthStageID] [int] NULL,
+	[FarmID] [int] NULL,
+	[ProcessStyleID] [int] NULL,
+)
+
+CREATE TABLE [dbo].[ProcessData](
+	[ProcessDataID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[ProcessDataCode] [nvarchar](50) NULL,
+	[Input] [nvarchar](max) NULL,
+	[CreateDate] [datetime] NULL,
+	[ResourceURL] [nvarchar](50) NULL,
+	[ProcessID] [int] NULL,
+	[SubProcessID] [int] NULL,
+)
+CREATE TABLE [dbo].[ProcessStyle](
+	[ProcessStyleID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[ProcessStyleCode] [nvarchar](50) NULL,
+	[ProcessStyleName] [nvarchar](100) NULL,
+	[CreateDate] [datetime] NULL,
+	[UpdateDate] [datetime] NULL,
+	[Description] [nvarchar](max) NULL,
+)
+CREATE TABLE [dbo].[RefreshToken](
+	[RefreshTokenID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[RefreshTokenCode] [nvarchar](100) NULL,
+	[RefreshTokenValue] [nvarchar](MAX) NULL,
+	[CreateDate] [datetime] NULL,
+	[ExpiredDate] [datetime] NULL,
+	[IsUsed] [bit] NULL,
+	[IsRevoked] [bit] NULL,
+	[UserID] [int] NULL,
+)
+
+CREATE TABLE [dbo].[Role](
+	[RoleID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[RoleName] [nvarchar](50) NULL,
+	[isSystem] [bit] NULL,
+)
+
+CREATE TABLE [dbo].[SubProcess](
+	[SubProcessID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[SubProcessCode] [nvarchar](50) NULL,
+	[SubProcessName] [nvarchar](100) NULL,
+	[ParentSubProcessID] [int] NULL,
+	[isDefault] [bit] NULL,
+	[isActive] [bit] NULL,
+	[CreateDate] [datetime] NULL,
+	[UpdateDate] [datetime] NULL,
+	[isDeleted] [bit] NULL,
+	[ProcessID] [int] NULL,
+	[ProcessStyleID] [int] NULL,
+)
+
+CREATE TABLE [dbo].[TaskFeedback](
+	[TaskFeedbackID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[TaskFeedbackCode] [nvarchar](50) NULL,
+	[Content] [nvarchar](max) NULL,
+	[CreateDate] [datetime] NULL,
+	[WorkLogID] [int] NULL,
+	[ManagerID] [int] NULL,
+)
+CREATE TABLE [dbo].[TypeWork](
+	[TypeWorkID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[TypeWorkCode] [nvarchar](50) NULL,
+	[VolumeRequired] [bit] NULL,
+	[TextColor] [nvarchar](50) NULL,
+	[TypeWorkName] [nvarchar](255) NULL,
+	[CreateDate] [datetime] NULL,
+	[BackgroundColor] [nvarchar](50) NULL,
+	[UpdateDate] [datetime] NULL,
+)
+CREATE TABLE [dbo].[User](
+	[UserID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[Email] [nvarchar](100) NULL,
+	[Password] [nvarchar](100) NULL,
+	[FullName] [nvarchar](100) NULL,
+	[PhoneNumber] [nvarchar](20) NULL,
+	[Gender] [nvarchar](20) NULL,
+	[DOB] [datetime] NULL,
+	[UserCode] [nvarchar](50) NULL,
+	[CreateDate] [datetime] NULL,
+	[UpdateDate] [datetime] NULL,
+	[IsDelete] [bit] NULL,
+	[DeleteDate] [datetime] NULL,
+	[Status] [nvarchar](20) NULL,
+	[IsDependency] [int] NULL,
+	[AvatarURL] [nvarchar](100) NULL,
+	[Otp] [nvarchar](100) NULL,
+	[ExpiredOtpTime] [datetime] NULL,
+	[RoleID] [int] NULL,
+)
+CREATE TABLE [dbo].[UserFarm](
+	[UserID] [int] NOT NULL,
+	[FarmID] [int] NOT NULL,
+	PRIMARY KEY([UserID], [FarmID])
+)
+CREATE TABLE [dbo].[UserWorkLog](
+	[WorkLogID] [int] NOT NULL,
+	[UserID] [int] NOT NULL,
+	[IsReporter] [int] NULL,
+	PRIMARY KEY([WorkLogID], [UserID])
+)
+CREATE TABLE [dbo].[WorkLog](
+	[WorkLogID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[WorkLogCode] [nvarchar](50) NULL,
+	[Status] [nvarchar](50) NULL,
+	[Notes] [nvarchar](max) NULL,
+	[Date] [datetime] NULL,
+	[IsConfirm] [bit] NULL,
+	[ScheduleID] [int] NULL,
+	[HarvestHistoryID] [int] NULL,
+	[CropID] [int] NULL,
+)
+
+CREATE TABLE [dbo].[WorkLogResource](
+	[WorkLogResourceID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[WorkLogResourceCode] [nvarchar](50) NULL,
+	[ResourceType] [nvarchar](255) NULL,
+	[ResourceURL] [nvarchar](max) NULL,
+	[Description] [nvarchar](max) NULL,
+	[CreateDate] [datetime] NULL,
+	[UpdateDate] [datetime] NULL,
+	[WorkLogID] [int] NULL,
+)
+ALTER TABLE [dbo].[CarePlanSchedule]  WITH CHECK ADD  CONSTRAINT [FK__CarePlanS__CareP__2180FB33] FOREIGN KEY([CarePlanID])
+REFERENCES [dbo].[Plan] ([PlanID])
+
+ALTER TABLE [dbo].[CarePlanSchedule] CHECK CONSTRAINT [FK__CarePlanS__CareP__2180FB33]
+
+ALTER TABLE [dbo].[Criteria]  WITH CHECK ADD  CONSTRAINT [FK__Criteria__Criter__3587F3E0] FOREIGN KEY([CriteriaTypeID])
+REFERENCES [dbo].[CriteriaType] ([CriteriaTypeID])
+
+ALTER TABLE [dbo].[Criteria] CHECK CONSTRAINT [FK__Criteria__Criter__3587F3E0]
+
+ALTER TABLE [dbo].[CriteriaGraftedPlant]  WITH CHECK ADD  CONSTRAINT [FK__CriteriaG__Crite__55F4C372] FOREIGN KEY([CriteriaID])
+REFERENCES [dbo].[Criteria] ([CriteriaID])
+
+ALTER TABLE [dbo].[CriteriaGraftedPlant] CHECK CONSTRAINT [FK__CriteriaG__Crite__55F4C372]
+
+ALTER TABLE [dbo].[CriteriaGraftedPlant]  WITH CHECK ADD  CONSTRAINT [FK__CriteriaG__Graft__55009F39] FOREIGN KEY([GraftedPlantID])
+REFERENCES [dbo].[GraftedPlant] ([GraftedPlantID])
+
+ALTER TABLE [dbo].[CriteriaGraftedPlant] CHECK CONSTRAINT [FK__CriteriaG__Graft__55009F39]
+
+ALTER TABLE [dbo].[CriteriaHarvestType]  WITH CHECK ADD  CONSTRAINT [FK_CriteriaHarvestType_Criteria] FOREIGN KEY([CriteriaID])
+REFERENCES [dbo].[Criteria] ([CriteriaID])
+
+ALTER TABLE [dbo].[CriteriaHarvestType] CHECK CONSTRAINT [FK_CriteriaHarvestType_Criteria]
+
+ALTER TABLE [dbo].[CriteriaHarvestType]  WITH CHECK ADD  CONSTRAINT [FK_CriteriaHarvestType_HarvestType] FOREIGN KEY([HarvestTypeID])
+REFERENCES [dbo].[HarvestType] ([HarvestTypeID])
+
+ALTER TABLE [dbo].[CriteriaHarvestType] CHECK CONSTRAINT [FK_CriteriaHarvestType_HarvestType]
+
+ALTER TABLE [dbo].[ChatMessage]  WITH CHECK ADD FOREIGN KEY([RoomID])
+REFERENCES [dbo].[ChatRoom] ([RoomID])
+
+ALTER TABLE [dbo].[ChatRoom]  WITH CHECK ADD FOREIGN KEY([CreateBy])
+REFERENCES [dbo].[User] ([UserID])
+
+ALTER TABLE [dbo].[FarmCoordination]  WITH CHECK ADD FOREIGN KEY([FarmID])
+REFERENCES [dbo].[Farm] ([FarmID])
+
+ALTER TABLE [dbo].[GraftedPlant]  WITH CHECK ADD  CONSTRAINT [FK__GraftedPl__PlanI__540C7B00] FOREIGN KEY([PlanID])
+REFERENCES [dbo].[Plan] ([PlanID])
+
+ALTER TABLE [dbo].[GraftedPlant] CHECK CONSTRAINT [FK__GraftedPl__PlanI__540C7B00]
+
+ALTER TABLE [dbo].[GraftedPlant]  WITH CHECK ADD  CONSTRAINT [FK__GraftedPl__Plant__531856C7] FOREIGN KEY([PlantID])
+REFERENCES [dbo].[Plant] ([PlantID])
+
+ALTER TABLE [dbo].[GraftedPlant] CHECK CONSTRAINT [FK__GraftedPl__Plant__531856C7]
+
+ALTER TABLE [dbo].[GraftedPlantNote]  WITH CHECK ADD  CONSTRAINT [FK_GraftedPlantNote_GraftedPlant] FOREIGN KEY([GraftedPlantID])
+REFERENCES [dbo].[GraftedPlant] ([GraftedPlantID])
+
+ALTER TABLE [dbo].[GraftedPlantNote] CHECK CONSTRAINT [FK_GraftedPlantNote_GraftedPlant]
+
+ALTER TABLE [dbo].[HarvestHistory]  WITH CHECK ADD  CONSTRAINT [FK__HarvestHi__CropI__3E1D39E1] FOREIGN KEY([CropID])
+REFERENCES [dbo].[Crop] ([CropID])
+
+ALTER TABLE [dbo].[HarvestHistory] CHECK CONSTRAINT [FK__HarvestHi__CropI__3E1D39E1]
+
+ALTER TABLE [dbo].[HarvestTypeHistory]  WITH CHECK ADD  CONSTRAINT [FK__HarvestTy__Harve__3F115E1A] FOREIGN KEY([HarvestTypeID])
+REFERENCES [dbo].[HarvestType] ([HarvestTypeID])
+
+ALTER TABLE [dbo].[HarvestTypeHistory] CHECK CONSTRAINT [FK__HarvestTy__Harve__3F115E1A]
+
+ALTER TABLE [dbo].[HarvestTypeHistory]  WITH CHECK ADD  CONSTRAINT [FK__HarvestTy__Harve__40058253] FOREIGN KEY([HarvestHistoryID])
+REFERENCES [dbo].[HarvestHistory] ([HarvestHistoryID])
+
+ALTER TABLE [dbo].[HarvestTypeHistory] CHECK CONSTRAINT [FK__HarvestTy__Harve__40058253]
+
+ALTER TABLE [dbo].[HarvestTypeHistory]  WITH CHECK ADD  CONSTRAINT [FK_HarvestTypeHistory_Plant] FOREIGN KEY([PlantID])
+REFERENCES [dbo].[Plant] ([PlantID])
+
+ALTER TABLE [dbo].[HarvestTypeHistory] CHECK CONSTRAINT [FK_HarvestTypeHistory_Plant]
+
+ALTER TABLE [dbo].[LandPlot]  WITH CHECK ADD  CONSTRAINT [FK__LandPlot__FarmID__2739D489] FOREIGN KEY([FarmID])
+REFERENCES [dbo].[Farm] ([FarmID])
+
+ALTER TABLE [dbo].[LandPlot] CHECK CONSTRAINT [FK__LandPlot__FarmID__2739D489]
+
+ALTER TABLE [dbo].[LandPlotCoordination]  WITH CHECK ADD  CONSTRAINT [FK__LandPlotC__LandP__31B762FC] FOREIGN KEY([LandPlotID])
+REFERENCES [dbo].[LandPlot] ([LandPlotID])
+
+ALTER TABLE [dbo].[LandPlotCoordination] CHECK CONSTRAINT [FK__LandPlotC__LandP__31B762FC]
+
+ALTER TABLE [dbo].[LandRow]  WITH CHECK ADD  CONSTRAINT [FK__LandRow__LandPlo__22751F6C] FOREIGN KEY([LandPlotID])
+REFERENCES [dbo].[LandPlot] ([LandPlotID])
+
+ALTER TABLE [dbo].[LandRow] CHECK CONSTRAINT [FK__LandRow__LandPlo__22751F6C]
+
+ALTER TABLE [dbo].[Notification]  WITH CHECK ADD  CONSTRAINT [FK__Notificat__Notif__5224328E] FOREIGN KEY([NotificationTypeID])
+REFERENCES [dbo].[NotificationType] ([NotificationTypeID])
+
+ALTER TABLE [dbo].[Notification] CHECK CONSTRAINT [FK__Notificat__Notif__5224328E]
+
+ALTER TABLE [dbo].[Notification]  WITH CHECK ADD  CONSTRAINT [FK_Notification_User] FOREIGN KEY([UserID])
+REFERENCES [dbo].[User] ([UserID])
+
+ALTER TABLE [dbo].[Notification] CHECK CONSTRAINT [FK_Notification_User]
+
+ALTER TABLE [dbo].[Order]  WITH CHECK ADD FOREIGN KEY([FarmID])
+REFERENCES [dbo].[Farm] ([FarmID])
+
+ALTER TABLE [dbo].[Order]  WITH CHECK ADD FOREIGN KEY([PackageID])
+REFERENCES [dbo].[Package] ([PackageID])
+
+ALTER TABLE [dbo].[PackageDetail]  WITH CHECK ADD FOREIGN KEY([PackageID])
+REFERENCES [dbo].[Package] ([PackageID])
+
+ALTER TABLE [dbo].[Partner]  WITH CHECK ADD FOREIGN KEY([RoleID])
+REFERENCES [dbo].[Role] ([RoleID])
+
+ALTER TABLE [dbo].[Payment]  WITH CHECK ADD FOREIGN KEY([OrderID])
+REFERENCES [dbo].[Order] ([OrderID])
+
+ALTER TABLE [dbo].[Plan]  WITH CHECK ADD  CONSTRAINT [FK__Plan__AssignorID__1EA48E88] FOREIGN KEY([AssignorID])
+REFERENCES [dbo].[User] ([UserID])
+
+ALTER TABLE [dbo].[Plan] CHECK CONSTRAINT [FK__Plan__AssignorID__1EA48E88]
+
+ALTER TABLE [dbo].[Plan]  WITH CHECK ADD  CONSTRAINT [FK__Plan__CropID__208CD6FA] FOREIGN KEY([CropID])
+REFERENCES [dbo].[Crop] ([CropID])
+
+ALTER TABLE [dbo].[Plan] CHECK CONSTRAINT [FK__Plan__CropID__208CD6FA]
+
+ALTER TABLE [dbo].[Plan]  WITH CHECK ADD  CONSTRAINT [FK__Plan__LandPlotID__1DB06A4F] FOREIGN KEY([LandPlotID])
+REFERENCES [dbo].[LandPlot] ([LandPlotID])
+
+ALTER TABLE [dbo].[Plan] CHECK CONSTRAINT [FK__Plan__LandPlotID__1DB06A4F]
+
+ALTER TABLE [dbo].[Plan]  WITH CHECK ADD  CONSTRAINT [FK__Plan__PlantID__1CBC4616] FOREIGN KEY([PlantID])
+REFERENCES [dbo].[Plant] ([PlantID])
+
+ALTER TABLE [dbo].[Plan] CHECK CONSTRAINT [FK__Plan__PlantID__1CBC4616]
+
+ALTER TABLE [dbo].[Plan]  WITH CHECK ADD  CONSTRAINT [FK__Plan__TypeWorkID__1F98B2C1] FOREIGN KEY([TypeWorkID])
+REFERENCES [dbo].[TypeWork] ([TypeWorkID])
+
+ALTER TABLE [dbo].[Plan] CHECK CONSTRAINT [FK__Plan__TypeWorkID__1F98B2C1]
+
+ALTER TABLE [dbo].[Plan]  WITH CHECK ADD  CONSTRAINT [FK_Plan_Process] FOREIGN KEY([ProcessID])
+REFERENCES [dbo].[Process] ([ProcessID])
+
+ALTER TABLE [dbo].[Plan] CHECK CONSTRAINT [FK_Plan_Process]
+
+ALTER TABLE [dbo].[Plant]  WITH CHECK ADD  CONSTRAINT [FK__Plant__CultivarI__1AD3FDA4] FOREIGN KEY([CultivarID])
+REFERENCES [dbo].[Cultivar] ([CultivarID])
+
+ALTER TABLE [dbo].[Plant] CHECK CONSTRAINT [FK__Plant__CultivarI__1AD3FDA4]
+
+ALTER TABLE [dbo].[Plant]  WITH CHECK ADD  CONSTRAINT [FK__Plant__LandRowID__1BC821DD] FOREIGN KEY([LandRowID])
+REFERENCES [dbo].[LandRow] ([LandRowID])
+
+ALTER TABLE [dbo].[Plant] CHECK CONSTRAINT [FK__Plant__LandRowID__1BC821DD]
+
+ALTER TABLE [dbo].[Plant]  WITH CHECK ADD  CONSTRAINT [FK_Plant_Plant] FOREIGN KEY([PlantReferenceID])
+REFERENCES [dbo].[Plant] ([PlantID])
+
+ALTER TABLE [dbo].[Plant] CHECK CONSTRAINT [FK_Plant_Plant]
+
+ALTER TABLE [dbo].[Plan]  WITH CHECK ADD  CONSTRAINT [FK_Plan_PlantLot] FOREIGN KEY([PlantLotID])
+REFERENCES [dbo].[PlantLot] ([PlantLotID])
+
+ALTER TABLE [dbo].[Plan] CHECK CONSTRAINT [FK_Plan_PlantLot]
+
+ALTER TABLE [dbo].[PlantCriteria]  WITH CHECK ADD  CONSTRAINT [FK__CriteriaT__Crite__37703C52] FOREIGN KEY([CriteriaID])
+REFERENCES [dbo].[Criteria] ([CriteriaID])
+
+ALTER TABLE [dbo].[PlantCriteria] CHECK CONSTRAINT [FK__CriteriaT__Crite__37703C52]
+
+ALTER TABLE [dbo].[PlantCriteria]  WITH CHECK ADD  CONSTRAINT [FK__CriteriaT__Plant__367C1819] FOREIGN KEY([PlantID])
+REFERENCES [dbo].[Plant] ([PlantID])
+
+ALTER TABLE [dbo].[PlantCriteria] CHECK CONSTRAINT [FK__CriteriaT__Plant__367C1819]
+
+ALTER TABLE [dbo].[PlantGrowthHistory]  WITH CHECK ADD  CONSTRAINT [FK__PlantNote__Plant__32AB8735] FOREIGN KEY([PlantID])
+REFERENCES [dbo].[Plant] ([PlantID])
+
+ALTER TABLE [dbo].[PlantGrowthHistory] CHECK CONSTRAINT [FK__PlantNote__Plant__32AB8735]
+
+ALTER TABLE [dbo].[PlantLot]  WITH CHECK ADD  CONSTRAINT [FK_PlantLot_Partner] FOREIGN KEY([PartnerID])
+REFERENCES [dbo].[Partner] ([PartnerID])
+
+ALTER TABLE [dbo].[PlantLot] CHECK CONSTRAINT [FK_PlantLot_Partner]
+
+ALTER TABLE [dbo].[PlantResource]  WITH CHECK ADD  CONSTRAINT [FK_PlantResource_PlantGrowthHistory] FOREIGN KEY([PlantGrowthHistoryID])
+REFERENCES [dbo].[PlantGrowthHistory] ([PlantGrowthHistoryID])
+
+ALTER TABLE [dbo].[PlantResource] CHECK CONSTRAINT [FK_PlantResource_PlantGrowthHistory]
+
+ALTER TABLE [dbo].[Process]  WITH CHECK ADD FOREIGN KEY([FarmID])
+REFERENCES [dbo].[Farm] ([FarmID])
+
+ALTER TABLE [dbo].[Process]  WITH CHECK ADD FOREIGN KEY([ProcessStyleID])
+REFERENCES [dbo].[ProcessStyle] ([ProcessStyleID])
+
+ALTER TABLE [dbo].[ProcessData]  WITH CHECK ADD FOREIGN KEY([ProcessID])
+REFERENCES [dbo].[Process] ([ProcessID])
+
+ALTER TABLE [dbo].[ProcessData]  WITH CHECK ADD FOREIGN KEY([SubProcessID])
+REFERENCES [dbo].[SubProcess] ([SubProcessID])
+
+ALTER TABLE [dbo].[RefreshToken]  WITH CHECK ADD FOREIGN KEY([UserID])
+REFERENCES [dbo].[User] ([UserID])
+
+ALTER TABLE [dbo].[SubProcess]  WITH CHECK ADD FOREIGN KEY([ProcessID])
+REFERENCES [dbo].[Process] ([ProcessID])
+
+ALTER TABLE [dbo].[SubProcess]  WITH CHECK ADD FOREIGN KEY([ProcessStyleID])
+REFERENCES [dbo].[ProcessStyle] ([ProcessStyleID])
+
+ALTER TABLE [dbo].[TaskFeedback]  WITH CHECK ADD FOREIGN KEY([ManagerID])
+REFERENCES [dbo].[User] ([UserID])
+
+ALTER TABLE [dbo].[TaskFeedback]  WITH CHECK ADD  CONSTRAINT [FK__TaskFeedb__WorkL__339FAB6E] FOREIGN KEY([WorkLogID])
+REFERENCES [dbo].[WorkLog] ([WorkLogID])
+
+ALTER TABLE [dbo].[TaskFeedback] CHECK CONSTRAINT [FK__TaskFeedb__WorkL__339FAB6E]
+
+ALTER TABLE [dbo].[User]  WITH CHECK ADD FOREIGN KEY([RoleID])
+REFERENCES [dbo].[Role] ([RoleID])
+
+ALTER TABLE [dbo].[UserFarm]  WITH CHECK ADD FOREIGN KEY([FarmID])
+REFERENCES [dbo].[Farm] ([FarmID])
+
+ALTER TABLE [dbo].[UserFarm]  WITH CHECK ADD FOREIGN KEY([UserID])
+REFERENCES [dbo].[User] ([UserID])
+
+ALTER TABLE [dbo].[UserWorkLog]  WITH CHECK ADD FOREIGN KEY([UserID])
+REFERENCES [dbo].[User] ([UserID])
+
+ALTER TABLE [dbo].[UserWorkLog]  WITH CHECK ADD  CONSTRAINT [FK__UserWorkL__WorkL__25518C17] FOREIGN KEY([WorkLogID])
+REFERENCES [dbo].[WorkLog] ([WorkLogID])
+
+ALTER TABLE [dbo].[UserWorkLog] CHECK CONSTRAINT [FK__UserWorkL__WorkL__25518C17]
+
+ALTER TABLE [dbo].[WorkLog]  WITH CHECK ADD  CONSTRAINT [FK__WorkLog__CropID__245D67DE] FOREIGN KEY([CropID])
+REFERENCES [dbo].[Crop] ([CropID])
+
+ALTER TABLE [dbo].[WorkLog] CHECK CONSTRAINT [FK__WorkLog__CropID__245D67DE]
+
+ALTER TABLE [dbo].[WorkLog]  WITH CHECK ADD  CONSTRAINT [FK__WorkLog__Schedul__236943A5] FOREIGN KEY([ScheduleID])
+REFERENCES [dbo].[CarePlanSchedule] ([ScheduleID])
+
+ALTER TABLE [dbo].[WorkLog] CHECK CONSTRAINT [FK__WorkLog__Schedul__236943A5]
+
+ALTER TABLE [dbo].[WorkLog]  WITH CHECK ADD  CONSTRAINT [FK_WorkLog_HarvestHistory] FOREIGN KEY([HarvestHistoryID])
+REFERENCES [dbo].[HarvestHistory] ([HarvestHistoryID])
+
+ALTER TABLE [dbo].[WorkLog] CHECK CONSTRAINT [FK_WorkLog_HarvestHistory]
+
+ALTER TABLE [dbo].[WorkLogResource]  WITH CHECK ADD  CONSTRAINT [FK__WorkLogRe__WorkL__29221CFB] FOREIGN KEY([WorkLogID])
+REFERENCES [dbo].[WorkLog] ([WorkLogID])
+
+ALTER TABLE [dbo].[WorkLogResource] CHECK CONSTRAINT [FK__WorkLogRe__WorkL__29221CFB]
+
+ALTER TABLE [dbo].[CriteriaType]  WITH CHECK ADD  CONSTRAINT [FK_CriteriaType_GrowthStage] FOREIGN KEY([GrowthStageID])
+REFERENCES [dbo].[GrowthStage] ([GrowthStageID])
+
+ALTER TABLE [dbo].[CriteriaType] CHECK CONSTRAINT [FK_CriteriaType_GrowthStage]
+
+ALTER TABLE [dbo].[Plan]  WITH CHECK ADD  CONSTRAINT [FK_Plan_GrowthStage] FOREIGN KEY([GrowthStageID])
+REFERENCES [dbo].[GrowthStage] ([GrowthStageID])
+
+ALTER TABLE [dbo].[Plan] CHECK CONSTRAINT [FK_Plan_GrowthStage]
+
+ALTER TABLE [dbo].[Process]  WITH CHECK ADD  CONSTRAINT [FK_Process_GrowthStage] FOREIGN KEY([GrowthStageID])
+REFERENCES [dbo].[GrowthStage] ([GrowthStageID])
+
+ALTER TABLE [dbo].[Process] CHECK CONSTRAINT [FK_Process_GrowthStage]
+
+ALTER TABLE [dbo].[LandPlotCrop]  WITH CHECK ADD  CONSTRAINT [FK_LandPlotCrop_Crop] FOREIGN KEY([CropID])
+REFERENCES [dbo].[Crop] ([CropID])
+
+ALTER TABLE [dbo].[LandPlotCrop] CHECK CONSTRAINT [FK_LandPlotCrop_Crop]
+
+ALTER TABLE [dbo].[LandPlotCrop]  WITH CHECK ADD  CONSTRAINT [FK_LandPlotCrop_LandPlot] FOREIGN KEY([LandPlotID])
+REFERENCES [dbo].[LandPlot] ([LandPlotID])
+
+ALTER TABLE [dbo].[LandPlotCrop] CHECK CONSTRAINT [FK_LandPlotCrop_LandPlot]
+
+ALTER TABLE [dbo].[GraftedPlant]  WITH CHECK ADD  CONSTRAINT [FK_GraftedPlant_PlantLot] FOREIGN KEY([PlantLotID])
+REFERENCES [dbo].[PlantLot] ([PlantLotID])
+
+ALTER TABLE [dbo].[GraftedPlant] CHECK CONSTRAINT [FK_GraftedPlant_PlantLot]
+
